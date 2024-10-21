@@ -9,9 +9,9 @@ datasource db {
 
 model User {
   id        String      @unique @default(uuid())
+  email     String      @unique
   name      String
   password  String
-  email     String
   Quest     Quest[]
   Character Character[]
   createdAt DateTime    @default(now())
