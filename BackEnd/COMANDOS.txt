@@ -6,4 +6,6 @@ docker-compose up -d  // inicia o banco em docker
 
 docker-compose down  // derruba o banco para manutenções
 
+npx prisma studio  // visualiza o banco pela interface web
+
 é preciso estar no diretorio do backend para efetuar esses comandos, do contrario irão ocorrer erros
