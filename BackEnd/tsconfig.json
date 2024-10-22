@@ -10,11 +10,11 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     /* Additional Options */
     "outDir": "./dist", /* Specify an output folder for all emitted files. */
-    //"rootDir": "./src", /* Specify the root folder within your source files. */
+    //"rootDir": "./BackEnd/src", /* Specify the root folder within your source files. */
     "baseUrl": "./", /* Specify the base directory to resolve non-relative module names. */
     "paths": {
       "@/*": [
-        "Node-BackEnd/src/*"
+        "BackEnd/src/*"
       ]
     }, /* Specify a set of entries that re-map imports to additional lookup locations. */
     /* Source Map Options */

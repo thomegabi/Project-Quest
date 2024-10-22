@@ -1,34 +1,35 @@
-import { Request, Response, NextFunction } from 'express';
+import e, { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator'; 
 import { UserRepository } from '../repositories/prisma/user-repository';
+import { UserService } from '../services/user-services';
 import path from 'path';
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import bcrypt from 'bcrypt'
 
-const userRepository = new UserRepository();
+const userService = new UserService();
 
-export const getUsers = async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+export const getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const users = await userRepository.getAllUsers();
-
-    return res.status(200).json({users});
+    const users = await userService.getAllUsers();
+    res.status(200).json({ users });
   } catch (error) {
-    console.log("Erro ao localizar usuários: ", error)
-    return res.status(500).json({message: "Um erro inesperado aconteceu"})
+    console.log("Erro ao localizar usuários: ", error);
+    next(error); 
   }
 };
 
 
-export const login = async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { email, password } = req.body;
 
   try {
-    const identifiedUser = await userRepository.getUserByEmail(email);
+    const identifiedUser = await userService.getUserByEmail(email);
     console.log(identifiedUser)
 
     if (!identifiedUser) {
-      return res.status(500).json({message: 'User unidentified'})
+      res.status(500).json({message: 'User unidentified'})
+      return
     }
 
     /*const isPasswordValid = await bcrypt.compare(password, identifiedUser.password);
@@ -42,27 +43,28 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       expiresIn: '3h', 
     });
 
-    return res.status(200).json({token});
+    res.status(200).json({token});
   } catch (error) {
     console.log("Error: ", error)
-    return res.status(404).json({error});
+    res.status(404).json({error});
   }
 };
 
-export const signup = async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   console.log("Signing up... ");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array());
-    return res.status(500).json({message: 'Erro: ', errors});
+    console.log("ERROR: ", errors.array());
+    res.status(422).json({message: 'Erro: ', errors});
   }
 
   const { email, password, name} = req.body;
 
   try {
-    const existingUser = await userRepository.getUserByEmail(email);
+    const existingUser = await userService.getUserByEmail(email);
     if (existingUser) {
-      return res.status(422).json({message: 'Email already in use'});
+      res.status(422).json({message: 'Email already in use'});
+      return 
     }
 
    /* const saltRounds = 10
@@ -75,7 +77,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     const hashedPassword = await hashPassword(password);
     console.log(hashedPassword); */
 
-    const createdUser = await userRepository.createUser(email, password, name);
+    const createdUser = await userService.createUser(email, password, name);
     
     const token = jwt.sign({ userId: createdUser.id }, process.env.JWT_SECRET as string, {
       expiresIn: '3h', 
@@ -83,10 +85,11 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
 
     console.log(`Email: ${email}, Password: ${password}, Nome: ${name}`);
     
-    return res.status(201).json({ token });
+    res.status(201).json({ token });
   } catch (error) {
     console.log('Error: ', error);
-    return res.status(500).json({message: 'Error: ', error});
+    next(error)
+    res.status(500).json({message: 'Error: ', error});
   }
 };
 
@@ -95,37 +98,40 @@ export const getUserWithToken = async(req: Request, res: Response, next: NextFun
 
   if(!userId){
     return res.status(404).json('Usuário não encontrado')
+    return
   }
 
   try{
-    const identifiedUser = await userRepository.getUserById(userId)
+    const identifiedUser = await userService.getUserById(userId)
 
     if(!identifiedUser){
-      return res.status(404).json('Usuário não localizado')
+      res.status(404).json('Usuário não localizado')
+      return 
     }
-    const identifiedUserJson = JSON.parse(JSON.stringify(identifiedUser, (key, value) =>
-      typeof value === 'bigint' ? value.toString() : value
-    ));
   
-    return res.status(200).json({identifiedUserJson})
+    res.status(200).json({identifiedUser})
   } catch(err){
+    next(err)
     res.status(500).json(err)
   }
 }
 
-export const deleteUser = async(req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+export const deleteUser = async(req: Request, res: Response, next: NextFunction): Promise<void> => {
   try{
     const { userId } = req.params
 
-    const deletedUser = await userRepository.deleteUser(userId)
+    const deletedUser = await userService.deleteUser(userId)
 
     if(!deletedUser){
-      return res.status(404).json({message: "Usuário não encontrado"})
+      res.status(404).json({message: "Usuário não encontrado"})
+      return
     }
 
-    return res.status(200).json({message: "Usuário deletado com sucesso: ", deletedUser})
+    res.status(200).json({message: "Usuário deletado com sucesso: ", deletedUser})
   } catch (error){
     console.log("Erro ao deletar usuário: ", error)
-    return res.status(500).json({message: "Um erro inesperado ocorreu: ", error})
+    next(error)
+    res.status(500).json({message: "Um erro inesperado ocorreu: ", error})
+    return
   }
 }
