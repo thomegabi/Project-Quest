@@ -1,11 +1,12 @@
 import bodyParser from 'body-parser';
-import express from 'express'
+import cors from 'cors';
+import dotenv from 'dotenv';
 import 'dotenv/config';
-import dotenv from 'dotenv'
-import userRoutes from './routes/user-routes'
-import cors from 'cors'
+import express from 'express';
+import characterRoutes from './routes/character-routes';
+import userRoutes from './routes/user-routes';
 
-dotenv.config()
+dotenv.config();
 
 export const app = express();
 
@@ -18,5 +19,5 @@ app.use(cors({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
-app.use('/', userRoutes)
+app.use('/', userRoutes);
+app.use('/', characterRoutes);
