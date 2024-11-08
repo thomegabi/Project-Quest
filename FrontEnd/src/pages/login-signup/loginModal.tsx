@@ -2,14 +2,14 @@ import { Key, Mail, X } from "lucide-react"
 import { FormEvent } from "react"
 import { Button } from "../../components/button"
 import { api } from "../../../lib/axios"
-//import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 interface LoginModalProps {
   closeLoginModal: () => void,
 }
 
 export function LoginModal({ closeLoginModal}: LoginModalProps){
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
 
   async function login(event: FormEvent<HTMLFormElement>){
     event.preventDefault()
@@ -30,11 +30,8 @@ export function LoginModal({ closeLoginModal}: LoginModalProps){
 
       sessionStorage.setItem('token', response.data.token)
 
-      /*if(response.data.adm){
-        navigate('/home/adm')
-      } else {
-        navigate('/home')
-      }*/
+      navigate('/home')
+    
     }catch{
       alert('Usuário ou senha incorretos, reveja seus dados')
     }

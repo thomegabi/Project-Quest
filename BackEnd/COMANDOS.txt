@@ -2,6 +2,10 @@ npm i // instala todas as dependencias
 
 npm start //inicia o servidor
 
+(CRIAR ARQUIVO .env NA RAIZ DO PROJETO COM A URL DO BANCO)
+
+(PARA EFETUAR OS COMANDOS DOCKER O APP DO DOCKER PRECISA ESTAR ABERTO)
+
 docker-compose up -d  // inicia o banco em docker
 
 docker-compose down  // derruba o banco para manutenções

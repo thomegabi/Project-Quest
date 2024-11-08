@@ -2,14 +2,14 @@ import { Key, Mail, User, X } from "lucide-react"
 import { FormEvent } from "react"
 import { Button } from "../../components/button"
 import { api } from "../../../lib/axios"
-//import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 interface SignUpModalProps {
   closeSignUpModal: () => void,
 }
 
 export function SignUpModal({ closeSignUpModal }: SignUpModalProps){
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
 
   async function createUser(event: FormEvent<HTMLFormElement>){
     event.preventDefault()
@@ -33,7 +33,7 @@ export function SignUpModal({ closeSignUpModal }: SignUpModalProps){
 
     sessionStorage.setItem('token', response.data.token)
       
-      //navigate('/home')
+      navigate('/home')
     }catch{
       alert('Dados incorretos')
     }
