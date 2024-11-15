@@ -30,7 +30,10 @@ export class UserRepository {
   async updateUser(id: string, data: Partial<User>): Promise<User> {
     return prisma.user.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        updatedAt: new Date()
+      }
     });
   }
 

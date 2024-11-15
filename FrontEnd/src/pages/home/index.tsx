@@ -14,8 +14,6 @@ export function HomePage(){
 
         
 
-        
-
         <div className="flex items-center z-10 gap-16">
           <div className="z-10 flex items-center">
             <div className="h-[625px] w-72 border-amber-600 border-2 rounded-2xl flex items-center  bg-black/60 z-10 px-5 py-10 flex-col gap-4 mb-3">
