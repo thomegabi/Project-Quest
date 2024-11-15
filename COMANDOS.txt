@@ -1,0 +1,9 @@
+npm i // instala todas as dependencias
+
+npm start //inicia o servidor
+
+docker-compose up -d  // inicia o banco em docker
+
+docker-compose down  // derruba o banco para manutenções
+
+é preciso estar no diretorio do backend para efetuar esses comandos, do contrario irão ocorrer erros
