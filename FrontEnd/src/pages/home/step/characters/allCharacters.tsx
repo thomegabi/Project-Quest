@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react"
 import { api } from "../../../../../lib/axios"
 
+interface AllCharactersModalProps{
+  handleCharacterSelection: (id: string) => void;
+}
+
 interface Character {
   id: string
   name: string
@@ -10,7 +14,7 @@ interface Character {
 }
 
 
-export function AllCharactersModal(){
+export function AllCharactersModal( { handleCharacterSelection } : AllCharactersModalProps){
   const [ characters, setCharacters ] = useState<Character[]>([])
 
   useEffect(() => {
@@ -52,23 +56,29 @@ export function AllCharactersModal(){
       <div className="flex flex-col justify-center items-center space-y-6">
         {characters.map((character) => (
           <div key={character.id} className="h-24 w-[791px] border-2 border-amber-950 bg-black/60 p-3">
-            <div className="flex gap-3">
-              <div className="h-[70px] w-[70px] border-2 border-amber-800">
-                {character.class === 'Knight' && (<img src="/classes/knightIcon.png" alt="Knight Icon" />)}
-                {character.class === 'Mage' && (<img src="/classes/mageIcon.png" alt="Mage Icon" />)}
-                {character.class === 'Rogue' && (<img src="/classes/rogueIcon.png" alt="Rogue Icon" />)}      
-              </div>
-
-              <div className="w-[600px] text-2xl text-amber-800 font-medium flex justify-between">
-                <div className="flex flex-col space-y-2">
-                  <p>Name: <span className="text-zinc-50">{character.name}</span></p>
-                  <p>Level: <span className="text-zinc-50">{character.lvl}</span></p>
+            <div className="relative">
+              <div className="flex gap-3">
+                <div className="h-[70px] w-[70px] border-2 border-amber-800">
+                  {character.class === 'Knight' && (<img src="/classes/knightIcon.png" alt="Knight Icon" />)}
+                  {character.class === 'Mage' && (<img src="/classes/mageIcon.png" alt="Mage Icon" />)}
+                  {character.class === 'Rogue' && (<img src="/classes/rogueIcon.png" alt="Rogue Icon" />)}      
                 </div>
 
-                <div className="flex flex-col space-y-2">
-                  <p>Faction: <span className="text-zinc-50">{character.faction}</span></p>
-                  <p>Class: <span className="text-zinc-50">{character.class}</span></p>
+                <div className="w-[600px] text-2xl text-amber-800 font-medium flex justify-between">
+                  <div className="flex flex-col space-y-2">
+                    <p>Name: <span className="text-zinc-50">{character.name}</span></p>
+                    <p>Level: <span className="text-zinc-50">{character.lvl}</span></p>
+                  </div>
+
+                  <div className="flex flex-col space-y-2">
+                    <p>Faction: <span className="text-zinc-50">{character.faction}</span></p>
+                    <p>Class: <span className="text-zinc-50">{character.class}</span></p>
+                  </div>
                 </div>
+
+                <button onClick={() => handleCharacterSelection(character.id)} className="absolute right-0 bottom-0 bg-amber-600 w-14 rounded-md">
+                  Check
+                </button>
               </div>
             </div>
           </div>

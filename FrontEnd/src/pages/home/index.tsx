@@ -31,7 +31,6 @@ export function HomePage() {
 
   function handleCharacterSelection(id: string) {
     setSelectedCharacter(id); 
-    console.log("Personagem selecionado:", id);
     openSelectedCharacterModal()
   }
 
@@ -108,7 +107,9 @@ export function HomePage() {
               )}
 
               {isAllCharactersModalOpen && (
-                <AllCharactersModal/>
+                <AllCharactersModal
+                  handleCharacterSelection={handleCharacterSelection}
+                />
               )}
 
               {isSelectedCharacterOpen && (
