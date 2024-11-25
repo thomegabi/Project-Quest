@@ -5,21 +5,37 @@ const characterRepo = new CharacterRepository();
 
 export const createCharacterHandler = async (req: Request, res: Response) => {
   try {
-    const { userId, name, race, faction, characterClass, lore, lvl, inteligence, vitality, resistance, dexterity, strength, faith } = req.body;
-    const character = await characterRepo.createCharacter(userId, name, race, faction, characterClass, lore, lvl, inteligence, vitality, resistance, dexterity, strength, faith);
+    const { name, race, faction, characterClass, lore, lvl, inteligence, vitality, resistance, dexterity, strength, faith } = req.body;
+    const userId = req.userId
+    
+    if(!userId){
+      console.error("Usuário não identificado")
+      return
+    }
+    const character = await characterRepo.createCharacter( userId, name, race, faction, characterClass, lore, lvl, inteligence, vitality, resistance, dexterity, strength, faith);
     res.status(201).json(character);
   } catch (error) {
     handleError(error, res, 'Erro ao criar personagem');
   }
 };
 
-export const getCharacterByIdHandler = async (req: Request, res: Response) => {
+export const getCharacterByIdHandler = async (req: Request, res: Response) : Promise<void> => {
   try {
-    const character = await characterRepo.getCharacterById(req.params.id);
+    const userId = req.userId
+
+    if(!userId){
+      console.error("User not found")
+      res.status(404).send('User not found')
+      return
+    }
+
+    const character = await characterRepo.getCharacterByUserId(userId);
     if (character) {
-      res.json(character);
+       res.status(200).json({character});
+       return
     } else {
-      res.status(404).json({ message: 'Character not found' });
+       res.status(404).json({ message: 'Character not found' });
+       return
     }
   } catch (error) {
     handleError(error, res, 'Erro ao buscar personagem');
@@ -28,9 +44,8 @@ export const getCharacterByIdHandler = async (req: Request, res: Response) => {
 
 export const getAllCharactersHandler = async (req: Request, res: Response) => {
   try {
-    const { skip = 0, take = 10 } = req.query;
-    const characters = await characterRepo.getAllCharacters(Number(skip), Number(take));
-    res.json(characters);
+    const characters = await characterRepo.getAllCharacters();
+    res.json({characters});
   } catch (error) {
     handleError(error, res, 'Erro ao listar personagens');
   }

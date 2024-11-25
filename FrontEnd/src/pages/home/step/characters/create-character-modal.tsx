@@ -3,12 +3,11 @@ import { FormEvent, useState } from "react";
 import { api } from "../../../../../lib/axios";
 import { Button } from "../../../../components/button";
 
-// Props do Modal
+
 interface CreateCharacterModalProps {
   closeModal: () => void;
 }
 
-// Componente Reutilizável: InputField
 interface InputFieldProps {
   label: string;
   name: string;
@@ -32,7 +31,7 @@ function InputField({ label, name, type = "text", placeholder }: InputFieldProps
   );
 }
 
-// Componente Reutilizável: SelectField
+
 interface SelectFieldProps {
   label: string;
   name: string;
@@ -60,11 +59,11 @@ function SelectField({ label, name, options }: SelectFieldProps) {
   );
 }
 
-// Componente Principal: CreateCharacterModal
+
 export function CreateCharacterModal({ closeModal }: CreateCharacterModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Função para validar os dados do formulário
+
   function validateForm(data: FormData): string | null {
     const name = data.get("name")?.toString();
     const lvlRaw = data.get("lvl");
@@ -83,7 +82,7 @@ export function CreateCharacterModal({ closeModal }: CreateCharacterModalProps) 
     return null;
   }
 
-  // Função para enviar o formulário
+
   async function createCharacter(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -97,7 +96,6 @@ export function CreateCharacterModal({ closeModal }: CreateCharacterModalProps) 
 
     const userId = localStorage.getItem("userId") || "12345";
 
-    // Construção do payload
     const payload = {
       userId,
       name: data.get("name")?.toString(),
@@ -118,14 +116,10 @@ export function CreateCharacterModal({ closeModal }: CreateCharacterModalProps) 
 
     try {
       setIsSubmitting(true);
-      const response = await api.post("/characters", payload);
-      alert(`Character ${response.data.name} created successfully!`);
+      await api.post("/characters", payload);
       closeModal();
-    } catch (error: any) {
+    } catch (error) {
       console.error("Erro ao criar personagem:", error);
-      const message =
-        error.response?.data?.error || "Failed to create character. Please try again.";
-      alert(message);
     } finally {
       setIsSubmitting(false);
     }

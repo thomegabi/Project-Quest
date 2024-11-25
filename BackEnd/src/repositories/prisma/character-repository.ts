@@ -5,7 +5,6 @@ const prisma = new PrismaClient({
 });
 
 export class CharacterRepository {
-  // Cria um novo personagem
   async createCharacter(
     userId: string,
     name: string,
@@ -13,13 +12,13 @@ export class CharacterRepository {
     faction: Factions,
     characterClass: Classes,
     lore: string,
-    lvl: number = 5,
-    inteligence: number = 5,
-    vitality: number = 5,
-    resistance: number = 5,
-    dexterity: number = 5,
-    strength: number = 5,
-    faith: number = 5
+    lvl: number,
+    inteligence: number ,
+    vitality: number,
+    resistance: number,
+    dexterity: number,
+    strength: number,
+    faith: number
   ): Promise<Character> {
     return prisma.character.create({
       data: {
@@ -47,12 +46,15 @@ export class CharacterRepository {
     });
   }
 
-  // Retorna todos os personagens, com paginação opcional
-  async getAllCharacters(skip = 0, take = 10): Promise<Character[]> {
+  async getCharacterByUserId(userId: string): Promise<Character[] | null> {
     return prisma.character.findMany({
-      skip,
-      take,
+      where: { userId },
     });
+  }
+
+  // Retorna todos os personagens, com paginação opcional
+  async getAllCharacters(): Promise<Character[]> {
+    return prisma.character.findMany();
   }
 
   // Atualiza informações de um personagem

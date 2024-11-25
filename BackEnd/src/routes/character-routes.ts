@@ -1,21 +1,19 @@
 import { Router } from 'express';
 import { createCharacterHandler, deleteCharacterHandler, getAllCharactersHandler, getCharacterByIdHandler, updateCharacterHandler } from '../controllers/character-controller';
+import { verifyToken } from '../middlewares/token-auth-middleware';
 
 const router = Router();
 
-// Rota para criar um personagem
+router.use(verifyToken)
+
 router.post('/characters', createCharacterHandler);
 
-// Rota para obter um personagem pelo ID
-router.get('/characters/:id', getCharacterByIdHandler);
+router.get('/myCharacters', getCharacterByIdHandler);
 
-// Rota para listar todos os personagens (com paginação)
 router.get('/characters', getAllCharactersHandler);
 
-// Rota para atualizar um personagem
 router.put('/characters/:id', updateCharacterHandler);
 
-// Rota para deletar um personagem pelo ID
-router.delete('/characters/:id', deleteCharacterHandler);
+router.delete('/character/:id/delete', deleteCharacterHandler);
 
 export default router;
