@@ -49,7 +49,7 @@ export function AllCharactersModal(){
     <div className="h-full w-full bg-black/60 font-jacquard12 p-2 space-y-6">
       <h1 className="text-amber-600 text-4xl flex justify-center ">All Characters</h1>
 
-      <div className="flex flex-col justify-center space-y-6">
+      <div className="flex flex-col justify-center items-center space-y-6">
         {characters.map((character) => (
           <div key={character.id} className="h-24 w-[791px] border-2 border-amber-950 bg-black/60 p-3">
             <div className="flex gap-3">

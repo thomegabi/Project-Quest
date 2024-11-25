@@ -2,6 +2,10 @@ import { useEffect, useState } from "react"
 import { api } from "../../../../../lib/axios"
 import { X } from "lucide-react"
 
+interface MyCharactersModalProps{
+  handleCharacterSelection: (id: string) => void;
+}
+
 interface Character {
   id: string
   name: string
@@ -11,9 +15,9 @@ interface Character {
 }
 
 
-export function MyCharactersModal(){
+export function MyCharactersModal({ handleCharacterSelection } : MyCharactersModalProps){
   const [ characters, setCharacters ] = useState<Character[]>([])
-  console.log('Characters: ', characters)
+  
 
   useEffect(() => {
     async function getCharacters() {
@@ -44,6 +48,8 @@ export function MyCharactersModal(){
     getCharacters();
   }, []); 
 
+ 
+
   async function deleteChar(charId: string) {
     if (!charId) {
       return;
@@ -66,34 +72,40 @@ export function MyCharactersModal(){
    
 
   return(
-    <div className="h-full w-full bg-black/60 font-jacquard12 p-2 space-y-6">
+    <div className="h-full w-full max-h-full bg-black/60 font-jacquard12 p-2 space-y-6">
       <h1 className="text-amber-600 text-4xl flex justify-center ">My Characters</h1>
 
-      <div className="flex flex-col justify-center space-y-6">
+      <div className="flex flex-col justify-center items-center space-y-6">
         {characters.map((character) => (
           <div key={character.id} className="h-24 w-[791px] border-2 border-amber-950 bg-black/60 p-3">
-            <div className="flex gap-3">
-              <div className="h-[70px] w-[70px] border-2 border-amber-800">
-                {character.class === 'Knight' && (<img src="/classes/knightIcon.png" alt="Knight Icon" />)}
-                {character.class === 'Mage' && (<img src="/classes/mageIcon.png" alt="Mage Icon" />)}
-                {character.class === 'Rogue' && (<img src="/classes/rogueIcon.png" alt="Rogue Icon" />)}      
-              </div>
-
-              <div className="w-[600px] text-2xl text-amber-800 font-medium flex justify-between">
-                <div className="flex flex-col space-y-2">
-                  <p>Name: <span className="text-zinc-50">{character.name}</span></p>
-                  <p>Level: <span className="text-zinc-50">{character.lvl}</span></p>
+            <div className="relative">
+              <div className="flex gap-3">
+                <div className="h-[70px] w-[70px] border-2 border-amber-800">
+                  {character.class === 'Knight' && (<img src="/classes/knightIcon.png" alt="Knight Icon" />)}
+                  {character.class === 'Mage' && (<img src="/classes/mageIcon.png" alt="Mage Icon" />)}
+                  {character.class === 'Rogue' && (<img src="/classes/rogueIcon.png" alt="Rogue Icon" />)}      
                 </div>
 
-                <div className="flex flex-col space-y-2">
-                  <p>Faction: <span className="text-zinc-50">{character.faction}</span></p>
-                  <p>Class: <span className="text-zinc-50">{character.class}</span></p>
-                </div>
-              </div>
+                <div className="w-[600px] text-2xl text-amber-800 font-medium flex justify-between">
+                  <div className="flex flex-col space-y-2">
+                    <p>Name: <span className="text-zinc-50">{character.name}</span></p>
+                    <p>Level: <span className="text-zinc-50">{character.lvl}</span></p>
+                  </div>
 
-              <button onClick={() => deleteChar(character.id)} className="absolute right-20">
-                <X className="size-5 text-amber-600 hover:text-amber-300"/>
-              </button>
+                  <div className="flex flex-col space-y-2">
+                    <p>Faction: <span className="text-zinc-50">{character.faction}</span></p>
+                    <p>Class: <span className="text-zinc-50">{character.class}</span></p>
+                  </div>
+                </div>
+
+                <button onClick={() => deleteChar(character.id)} className="absolute right-0">
+                  <X className="size-5 text-amber-600 hover:text-amber-300"/>
+                </button>
+
+                <button onClick={() => handleCharacterSelection(character.id)} className="absolute right-0 bottom-0 bg-amber-600 w-14 rounded-md">
+                  Check
+                </button>
+              </div>
             </div>
           </div>
         ))}

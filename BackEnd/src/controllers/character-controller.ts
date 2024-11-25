@@ -19,7 +19,7 @@ export const createCharacterHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const getCharacterByIdHandler = async (req: Request, res: Response) : Promise<void> => {
+export const getCharacterByUserIdHandler = async (req: Request, res: Response) : Promise<void> => {
   try {
     const userId = req.userId
 
@@ -30,6 +30,29 @@ export const getCharacterByIdHandler = async (req: Request, res: Response) : Pro
     }
 
     const character = await characterRepo.getCharacterByUserId(userId);
+    if (character) {
+       res.status(200).json({character});
+       return
+    } else {
+       res.status(404).json({ message: 'Character not found' });
+       return
+    }
+  } catch (error) {
+    handleError(error, res, 'Erro ao buscar personagem');
+  }
+};
+
+export const getCharacterByIdHandler = async (req: Request, res: Response) : Promise<void> => {
+  try {
+    const { id } = req.params
+
+    if(!id){
+      console.error("Character not found")
+      res.status(404).send('Character not found')
+      return
+    }
+
+    const character = await characterRepo.getCharacterById(id);
     if (character) {
        res.status(200).json({character});
        return

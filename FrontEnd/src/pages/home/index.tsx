@@ -4,12 +4,15 @@ import { CreateCharacterModal } from "./step/characters/create-character-modal";
 import { MyCharactersModal } from "./step/characters/myCharactersModal";
 import { AllCharactersModal } from "./step/characters/allCharacters";
 import { useNavigate } from "react-router-dom";
+import { SelectedCharacter } from "./step/characters/selectedCharModal";
 
 export function HomePage() {
   const navigate = useNavigate()
   const [ isCharacterModalOpen, setCharacterModalOpen ] = useState(false);
   const [ isMyCharactersModalOpen, setMyCharactersModalOpen ] = useState(false)
   const [ isAllCharactersModalOpen, setAllCharactersModalOpen ] = useState(false)
+  const [ isSelectedCharacterOpen, setSelectedCharacterOpen ] = useState(false);
+  const [ selectedCharacter, setSelectedCharacter ] = useState<string | null>(null);
 
   function openCharacterModal() {
     closeAllModals()
@@ -26,10 +29,23 @@ export function HomePage() {
     setAllCharactersModalOpen(true);
   }
 
+  function handleCharacterSelection(id: string) {
+    setSelectedCharacter(id); 
+    console.log("Personagem selecionado:", id);
+    openSelectedCharacterModal()
+  }
+
+  function openSelectedCharacterModal() {
+    closeAllModals();
+    setSelectedCharacterOpen(true);
+  }
+
   function closeAllModals() {
     setCharacterModalOpen(false);
     setMyCharactersModalOpen(false);
     setAllCharactersModalOpen(false);
+    setSelectedCharacterOpen(false);
+   // setSelectedCharacter(null);
   }
 
   async function logout(){
@@ -80,17 +96,25 @@ export function HomePage() {
           </div>
 
           <div className="z-10 flex items-center">
-            <div className="w-[862px] h-[625px] border-2 border-amber-600 bg-black/60 z-10 mb-3">
+            <div className="w-[862px] h-[625px] border-2 border-amber-600 bg-black/60 z-10 mb-3 overflow-y-auto">
               {isCharacterModalOpen && (
                 <CreateCharacterModal closeModal={closeAllModals} />
               )}
 
               {isMyCharactersModalOpen && (
-                <MyCharactersModal/>
+                <MyCharactersModal
+                  handleCharacterSelection={handleCharacterSelection}
+                />
               )}
 
               {isAllCharactersModalOpen && (
                 <AllCharactersModal/>
+              )}
+
+              {isSelectedCharacterOpen && (
+                <SelectedCharacter 
+                  characterId={selectedCharacter}
+                />
               )}
             </div>
             <div className="absolute pl-40 z-0">
