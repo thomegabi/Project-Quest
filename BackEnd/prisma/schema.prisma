@@ -37,6 +37,7 @@ model Character {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   name        String
+  sex         Sex
   race        Races
   faction     Factions
   class       Classes
@@ -71,4 +72,9 @@ enum Classes {
   KNIGHT
   MAGE
   ROGUE
+}
+
+enum Sex {
+  MALE
+  FEMALE
 }

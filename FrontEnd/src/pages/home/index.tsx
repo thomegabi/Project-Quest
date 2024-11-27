@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button } from "../../components/button";
-import { CreateCharacterModal } from "./step/characters/create-character-modal";
 import { MyCharactersModal } from "./step/characters/myCharactersModal";
 import { AllCharactersModal } from "./step/characters/allCharacters";
 import { useNavigate } from "react-router-dom";
 import { SelectedCharacter } from "./step/characters/selectedCharModal";
+import { CreateCharacterModal } from "./step/characters/createCharacterModal";
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -97,7 +97,7 @@ export function HomePage() {
           <div className="z-10 flex items-center">
             <div className="w-[862px] h-[625px] border-2 border-amber-600 bg-black/60 z-10 mb-3 overflow-y-auto">
               {isCharacterModalOpen && (
-                <CreateCharacterModal closeModal={closeAllModals} />
+                <CreateCharacterModal />
               )}
 
               {isMyCharactersModalOpen && (
