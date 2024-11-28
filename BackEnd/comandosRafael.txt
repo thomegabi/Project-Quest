@@ -1,0 +1,14 @@
+cd BackEnd 
+
+npm i 
+
+docker-compose up -d
+
+npx prisma migrate dev
+
+npx prisma generate
+
+npm start
+
+agora da para utilizar o .\start da raiz para iniciar td automaticamente
+

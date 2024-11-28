@@ -49,7 +49,7 @@ const signup = async (req, res, next) => {
     console.log("Signing up... ");
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
-        console.log(errors.array());
+        console.log("ERROR: ", errors.array());
         res.status(422).json({ message: 'Erro: ', errors });
     }
     const { email, password, name } = req.body;

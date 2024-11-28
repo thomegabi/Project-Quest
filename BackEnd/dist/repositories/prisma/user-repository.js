@@ -28,7 +28,10 @@ class UserRepository {
     async updateUser(id, data) {
         return prisma.user.update({
             where: { id },
-            data,
+            data: {
+                ...data,
+                updatedAt: new Date()
+            }
         });
     }
     async deleteUser(id) {
