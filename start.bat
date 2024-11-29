@@ -6,5 +6,5 @@ start docker-compose up -d
 start npx prisma studio
 
 cd ..
-cd FrontEnd
+cd FrontEnd 
 start npm run dev

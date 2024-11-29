@@ -9,7 +9,7 @@ const buttonVariants = tv({
     variant: {
       primary: 'bg-amber-600 text-zinc-950 hover:bg-amber-700',
       secondary: 'bg-amber-950 text-amber-600 hover:bg-amber-900',
-      terciary: 'bg-rose-600 text-rose-950 hover:bg-rose-800',
+      terciary: 'bg-amber-700 text-zinc-950 hover:bg-amber-800',
     },
 
     size: {

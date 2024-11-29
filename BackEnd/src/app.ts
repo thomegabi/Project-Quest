@@ -1,10 +1,10 @@
 import bodyParser from 'body-parser';
-import express from 'express';
-import 'dotenv/config';
-import dotenv from 'dotenv';
-import userRoutes from './routes/user-routes';
-import { questRoutes } from './routes/quest-routes';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import 'dotenv/config';
+import express from 'express';
+import characterRoutes from './routes/character-routes';
+import userRoutes from './routes/user-routes';
 
 dotenv.config();
 
@@ -20,4 +20,4 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/', userRoutes);
-app.use('/', questRoutes);
+app.use('/', characterRoutes);
