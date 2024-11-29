@@ -6,7 +6,7 @@ const router = Router();
 
 router.use(verifyToken)
 
-router.post('/characters', createCharacterHandler);
+router.post('/createCharacter', createCharacterHandler);
 
 router.get('/myCharacters', getCharacterByUserIdHandler);
 

@@ -97,7 +97,9 @@ export function HomePage() {
           <div className="z-10 flex items-center">
             <div className="w-[862px] h-[625px] border-2 border-amber-600 bg-black/60 z-10 mb-3 overflow-y-auto">
               {isCharacterModalOpen && (
-                <CreateCharacterModal />
+                <CreateCharacterModal 
+                  closeModal={closeAllModals}
+                />
               )}
 
               {isMyCharactersModalOpen && (

@@ -5,17 +5,19 @@ const characterRepo = new CharacterRepository();
 
 export const createCharacterHandler = async (req: Request, res: Response) => {
   try {
-    const { name, race, faction, characterClass, lore, lvl, inteligence, vitality, resistance, dexterity, strength, faith } = req.body;
+    const { name, sex, race, faction, characterClass, lore, lvl, inteligence, vitality, resistance, dexterity, strength, faith } = req.body;
     const userId = req.userId
     
     if(!userId){
       console.error("Usuário não identificado")
       return
     }
-    const character = await characterRepo.createCharacter( userId, name, race, faction, characterClass, lore, lvl, inteligence, vitality, resistance, dexterity, strength, faith);
-    res.status(201).json(character);
+    const character = await characterRepo.createCharacter( userId, name, sex, race, faction, characterClass, lore, lvl, inteligence, vitality, resistance, dexterity, strength, faith);
+    res.status(201).send('Character created');
   } catch (error) {
-    handleError(error, res, 'Erro ao criar personagem');
+    console.error("error on character creation: ", error)
+    res.status(500).send("An error has occured: ")
+    return
   }
 };
 

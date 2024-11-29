@@ -1,4 +1,4 @@
-import { Character, Classes, Factions, PrismaClient, Races } from '@prisma/client';
+import { Character, Classes, Factions, PrismaClient, Races, Sex } from '@prisma/client';
 
 const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
@@ -8,6 +8,7 @@ export class CharacterRepository {
   async createCharacter(
     userId: string,
     name: string,
+    sex: Sex,
     race: Races,
     faction: Factions,
     characterClass: Classes,
@@ -24,6 +25,7 @@ export class CharacterRepository {
       data: {
         userId,
         name,
+        sex,
         race,
         faction,
         class: characterClass,
