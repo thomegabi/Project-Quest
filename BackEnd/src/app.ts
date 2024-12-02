@@ -5,6 +5,7 @@ import 'dotenv/config';
 import express from 'express';
 import characterRoutes from './routes/character-routes';
 import userRoutes from './routes/user-routes';
+import questRoutes from './routes/quest-routes';
 
 dotenv.config();
 
@@ -21,3 +22,4 @@ app.use(bodyParser.json());
 
 app.use('/', userRoutes);
 app.use('/', characterRoutes);
+app.use('/', questRoutes);

@@ -43,7 +43,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       expiresIn: '3h', 
     });
 
-    res.status(200).json({token});
+    res.status(200).json({token, userId: identifiedUser.id});
   } catch (error) {
     console.log("Error: ", error)
     res.status(404).json({error});

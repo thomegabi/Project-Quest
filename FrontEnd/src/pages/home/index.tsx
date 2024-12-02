@@ -5,6 +5,10 @@ import { AllCharactersModal } from "./step/characters/allCharacters";
 import { useNavigate } from "react-router-dom";
 import { SelectedCharacter } from "./step/characters/selectedCharModal";
 import { CreateCharacterModal } from "./step/characters/createCharacterModal";
+import { CreateQuestModal } from "./step/quests/createQuestModal";
+import { MyQuestsModal } from "./step/quests/myQuestsModal";
+import { AllQuestsModal } from "./step/quests/allQuestsModal";
+import { SelectedQuest } from "./step/quests/selectedQuestModal";
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -13,6 +17,11 @@ export function HomePage() {
   const [ isAllCharactersModalOpen, setAllCharactersModalOpen ] = useState(false)
   const [ isSelectedCharacterOpen, setSelectedCharacterOpen ] = useState(false);
   const [ selectedCharacter, setSelectedCharacter ] = useState<string | null>(null);
+  const [ isQuestModalOpen, setQuestModalOpen ] = useState(false);
+  const [ isMyQuestsModalOpen, setMyQuestsModalOpen ] = useState(false);
+  const [ isAllQuestsModalOpen, setAllQuestsModalOpen ] = useState(false);
+  const [ isSelectedQuestOpen, setSelectedQuestOpen ] = useState(false);
+  const [ selectedQuest, setSelectedQuest ] = useState<string | null>(null);
 
   function openCharacterModal() {
     closeAllModals()
@@ -39,12 +48,40 @@ export function HomePage() {
     setSelectedCharacterOpen(true);
   }
 
+  function openQuestModal() {
+    closeAllModals()
+    setQuestModalOpen(true);
+  }
+  
+  function openMyQuestsModal() {
+    closeAllModals()
+    setMyQuestsModalOpen(true);
+  }
+
+  function openAllQuestsModal() {
+    closeAllModals()
+    setAllQuestsModalOpen(true);
+  }
+
+  function handleQuestSelection(id: string) {
+    setSelectedQuest(id); 
+    openSelectedQuestModal()
+  }
+
+  function openSelectedQuestModal() {
+    closeAllModals();
+    setSelectedQuestOpen(true);
+  }
+
   function closeAllModals() {
     setCharacterModalOpen(false);
     setMyCharactersModalOpen(false);
     setAllCharactersModalOpen(false);
     setSelectedCharacterOpen(false);
-   // setSelectedCharacter(null);
+    setQuestModalOpen(false);
+    setMyQuestsModalOpen(false);
+    setAllQuestsModalOpen(false);
+    setSelectedQuestOpen(false);
   }
 
   async function logout(){
@@ -70,19 +107,19 @@ export function HomePage() {
               <Button variant="primary" size="full" onClick={openCharacterModal}>
                 <p className="text-[40px] font-medium">Create Char</p>
               </Button>
-              <Button variant="primary" size="full">
+              <Button variant="primary" size="full" onClick={openQuestModal}>
                 <p className="text-[40px] font-medium">Create Quest</p>
               </Button>
               <Button variant="secondary" size="full" onClick={openMyCharacterModal}>
                 <p className="text-[35px] font-medium">My Characters</p>
               </Button>
-              <Button variant="secondary" size="full">
+              <Button variant="secondary" size="full" onClick={openMyQuestsModal}>
                 <p className="text-[35px] font-medium">My Quests</p>
               </Button>
               <Button variant="secondary" size="full" onClick={openAllCharacterModal}>
                 <p className="text-[35px] font-medium">All Characters</p>
               </Button>
-              <Button variant="secondary" size="full">
+              <Button variant="secondary" size="full" onClick={openAllQuestsModal}>
                 <p className="text-[35px] font-medium">All Quests</p>
               </Button>
               <Button variant="terciary" size="full" onClick={logout}>
@@ -117,6 +154,30 @@ export function HomePage() {
               {isSelectedCharacterOpen && (
                 <SelectedCharacter 
                   characterId={selectedCharacter}
+                />
+              )}
+
+              {isQuestModalOpen && (
+                <CreateQuestModal 
+                  closeModal={closeAllModals}
+                />
+              )}
+
+              {isMyQuestsModalOpen && (
+                <MyQuestsModal
+                  handleQuestSelection={handleQuestSelection}
+                />
+              )}
+
+              {isAllQuestsModalOpen && (
+                <AllQuestsModal
+                  handleQuestSelection={handleQuestSelection}
+                />
+              )}
+
+              {isSelectedQuestOpen && (
+                <SelectedQuest 
+                  questId={selectedQuest}
                 />
               )}
             </div>
