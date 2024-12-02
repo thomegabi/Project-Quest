@@ -53,9 +53,11 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   console.log("Signing up... ");
   const errors = validationResult(req);
+  
   if (!errors.isEmpty()) {
     console.log("ERROR: ", errors.array());
     res.status(422).json({message: 'Erro: ', errors});
+    return;
   }
 
   const { email, password, name} = req.body;
@@ -64,18 +66,8 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     const existingUser = await userService.getUserByEmail(email);
     if (existingUser) {
       res.status(422).json({message: 'Email already in use'});
-      return 
+      return;
     }
-
-   /* const saltRounds = 10
-
-    const hashPassword = async (password: any) => {
-      const hash = await bcrypt.hash(password, saltRounds);
-      return hash;
-    };
-    
-    const hashedPassword = await hashPassword(password);
-    console.log(hashedPassword); */
 
     const createdUser = await userService.createUser(email, password, name);
     
@@ -88,7 +80,6 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
     res.status(201).json({ token });
   } catch (error) {
     console.log('Error: ', error);
-    next(error)
     res.status(500).json({message: 'Error: ', error});
   }
 };
